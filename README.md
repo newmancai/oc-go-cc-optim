@@ -21,6 +21,7 @@ OpenCode Go gives you access to powerful open coding models for **$5/month** (th
 
 - **Transparent Proxy** — Claude Code sends Anthropic-format requests, proxy transforms to OpenAI format and back
 - **Model Routing** — Automatically routes to different models based on context (default, thinking, long context, background)
+- **Manual Model Selection** — Override routing with Claude Code's `/model` command — use any scenario key from `config.json` (e.g., `/model think`, `/model complex`)
 - **Fallback Chains** — If a model fails, automatically tries the next one in your configured chain
 - **Circuit Breaker** — Tracks model health and skips failing models to avoid latency spikes
 - **Real-time Streaming** — Full SSE streaming with live OpenAI -> Anthropic format transformation
@@ -41,6 +42,7 @@ OpenCode Go gives you access to powerful open coding models for **$5/month** (th
 git clone https://github.com/newmancai/oc-go-cc-optim.git
 cd oc-go-cc-optim
 make build
+export PATH=$PWD/bin:$PATH
 ```
 
 Or see [INSTALLATION.md](INSTALLATION.md) for more options.
@@ -97,6 +99,21 @@ oc-go-cc autostart status   Check autostart status
 oc-go-cc --version          Show version
 ```
 
+### Manual Model Selection
+
+In Claude Code, use `/model <scenario>` to override automatic routing and force a specific scenario from `config.json`:
+
+```
+/model default     → kimi-k2.6 (default scenario)
+/model think       → glm-5 (thinking/reasoning)
+/model complex     → glm-5.1 (complex architecture/tools)
+/model background  → qwen3.5-plus (simple read-only ops)
+/model long_context → minimax-m2.5 (1M context window)
+/model fast        → qwen3.6-plus (fast streaming)
+```
+
+This works because the proxy checks if the Claude model name matches a key in `config.json`'s `models` section. You can also add custom aliases to the config file for any name you prefer.
+
 ### Documentation
 
 | Document | Description |
@@ -132,6 +149,7 @@ OpenCode Go 以 **$5/月**（之后 $10/月）的价格提供强大的开源编�
 git clone https://github.com/newmancai/oc-go-cc-optim.git
 cd oc-go-cc-optim
 make build
+export PATH=$PWD/bin:$PATH
 
 # 2. 初始化配置
 oc-go-cc init
@@ -147,4 +165,19 @@ export ANTHROPIC_AUTH_TOKEN=unused
 # 5. 运行 Claude Code
 claude
 ```
+
+### 手动选择模型
+
+在 Claude Code 中使用 `/model` 命令覆盖自动路由，直接选择 `config.json` 中定义的场景：
+
+```
+/model default     → kimi-k2.6（默认场景）
+/model think       → glm-5（思考/推理）
+/model complex     → glm-5.1（复杂架构/工具调用）
+/model background  → qwen3.5-plus（简单只读操作）
+/model long_context → minimax-m2.5（长上下文）
+/model fast        → qwen3.6-plus（快速流式响应）
+```
+
+工作原理：当 Claude 的模型名匹配到 `config.json` 中 `models` 段的某个 key 时，代理会直接使用该 key 对应的配置，跳过自动场景检测。
 
