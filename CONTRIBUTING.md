@@ -82,6 +82,10 @@ For Claude Code and other agentic coding workflows, configure DeepSeek V4 models
 
 DeepSeek V4 thinking responses are returned as OpenAI `reasoning_content` and transformed back into Anthropic `thinking` blocks for Claude Code.
 
+## License
+
+All contributions are under [AGPL-3.0](LICENSE). By contributing, you agree that your contributions will be licensed under the same license.
+
 ## Architecture
 
 ```
@@ -117,7 +121,9 @@ pkg/types/
 ├── anthropic.go                Anthropic API types (polymorphic system/content fields)
 └── openai.go                   OpenAI API types
 configs/
-└── config.example.json         Example configuration
+├── config.example.json         Example proxy configuration
+├── config.oc-go-cc.json        Annotated proxy configuration reference
+└── config.cc.json              Claude Code configuration for use with oc-go-cc
 ```
 
 ### Key Design Decisions

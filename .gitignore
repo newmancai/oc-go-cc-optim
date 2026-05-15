@@ -4,3 +4,5 @@ bin/
 .env
 .tmp/
 oc-go-cc
+dist/
+oc-go-cc_linux-amd64

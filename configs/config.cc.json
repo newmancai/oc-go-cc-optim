@@ -1,0 +1,43 @@
+{
+  // ================================================================
+  // Claude Code Configuration
+  // ================================================================
+  // This shows how to configure Claude Code to use oc-go-cc.
+  // Place at: ~/.claude/settings.json (project-level)
+  //        or: ~/.claude/settings.local.json (user-level, not committed)
+  // ================================================================
+
+  // Tell Claude Code to send requests through oc-go-cc proxy
+  "ANTHROPIC_BASE_URL": "http://127.0.0.1:3456",
+  "ANTHROPIC_AUTH_TOKEN": "unused",
+
+  // Optional: override the model sent in requests
+  // "model": "claude-sonnet-4-20250514"
+
+  // ================================================================
+  // Permissions (recommended for oc-go-cc users)
+  // ================================================================
+
+  "permissions": {
+    "allow": [
+      "Bash:curl",
+      "Bash:git",
+      "Bash:npm",
+      "Bash:go",
+      "Bash:make",
+      "Bash:ls",
+      "Bash:cat",
+      "Bash:grep",
+      "Bash:find",
+      "Bash:mkdir",
+      "Bash:rm",
+      "Bash:cp",
+      "Bash:mv",
+      "Bash:chmod",
+      "Read",
+      "Write",
+      "Edit",
+      "Agent"
+    ]
+  }
+}

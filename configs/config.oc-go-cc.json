@@ -1,9 +1,42 @@
 {
+  // ================================================================
+  // oc-go-cc Proxy Configuration
+  // ================================================================
+  // This is the config file for the oc-go-cc proxy itself.
+  // Place at: ~/.config/oc-go-cc/config.json
+  // Generate with: oc-go-cc init
+  // Override path with: export OC_GO_CC_CONFIG=/path/to/config.json
+  // ================================================================
+
+  // API key for OpenCode Go (required)
+  // Supports ${VAR} env interpolation — set OC_GO_CC_API_KEY in env
   "api_key": "${OC_GO_CC_API_KEY}",
+
+  // Proxy listen address
   "host": "127.0.0.1",
   "port": 3456,
+
+  // Hot-reload: watch config file for changes (off by default)
   "hot_reload": false,
+
+  // Enable streaming-aware scenario routing (default: false)
+  // When true, streaming requests may be routed to the "fast" model group
+  // for better time-to-first-token (TTFT)
   "enable_streaming_scenario_routing": false,
+
+  // ================================================================
+  // Model Routing
+  // ================================================================
+  // Each key maps to a scenario detected by the router.
+  // See: internal/router/scenarios.go for detection logic.
+  //
+  // Scenario priority:
+  //   1. Long Context (>80K tokens) → MiniMax (1M context)
+  //   2. Complex (architectural patterns) → GLM-5.1
+  //   3. Think (reasoning keywords) → GLM-5
+  //   4. Background (simple read-only ops) → Qwen3.5 Plus
+  //   5. Default → Kimi K2.6
+  // ================================================================
 
   "models": {
     "background": {
@@ -44,6 +77,8 @@
       "max_tokens": 4096
     },
 
+    // Named model aliases — Claude Code sends these as model IDs
+    // Map any Anthropic model name to an OpenCode Go model
     "deepseek-v4-pro": {
       "provider": "opencode-go",
       "model_id": "deepseek-v4-pro",
@@ -64,7 +99,6 @@
         "type": "enabled"
       }
     },
-
     "claude-sonnet-4-20250514": {
       "provider": "opencode-go",
       "model_id": "glm-5.1",
@@ -78,6 +112,14 @@
       "max_tokens": 8192
     }
   },
+
+  // ================================================================
+  // Fallback Chains
+  // ================================================================
+  // When a model fails (network error, rate limit, server error),
+  // the proxy tries the next model in the chain.
+  // Each model has a circuit breaker: 3 failures = 30s skip.
+  // ================================================================
 
   "fallbacks": {
     "background": [
@@ -104,7 +146,6 @@
       { "provider": "opencode-go", "model_id": "qwen3.5-plus" },
       { "provider": "opencode-go", "model_id": "minimax-m2.5" }
     ],
-
     "deepseek-v4-pro": [
       { "provider": "opencode-go", "model_id": "deepseek-v4-flash" },
       { "provider": "opencode-go", "model_id": "kimi-k2.6" }
@@ -113,7 +154,6 @@
       { "provider": "opencode-go", "model_id": "deepseek-v4-pro" },
       { "provider": "opencode-go", "model_id": "qwen3.6-plus" }
     ],
-
     "claude-sonnet-4-20250514": [
       { "provider": "opencode-go", "model_id": "kimi-k2.6" },
       { "provider": "opencode-go", "model_id": "qwen3.6-plus" }
@@ -124,11 +164,19 @@
     ]
   },
 
+  // ================================================================
+  // OpenCode Go Backend
+  // ================================================================
+
   "opencode_go": {
     "base_url": "https://opencode.ai/zen/go/v1/chat/completions",
     "anthropic_base_url": "https://opencode.ai/zen/go/v1/messages",
     "timeout_ms": 300000
   },
+
+  // ================================================================
+  // Logging
+  // ================================================================
 
   "logging": {
     "level": "info",

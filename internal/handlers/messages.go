@@ -1,3 +1,20 @@
+// oc-go-cc — Anthropic-to-OpenAI proxy for OpenCode Go + Claude Code
+//
+// Copyright (C) 2026  Samuel Tuyizere
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 // Package handlers contains HTTP request handlers for API endpoints.
 package handlers
 
@@ -180,10 +197,10 @@ func (h *MessagesHandler) HandleMessages(w http.ResponseWriter, r *http.Request)
 	var routeResult router.RouteResult
 	if isStreaming && !h.modelRouter.IsStreamingScenarioRoutingEnabled() {
 		// Streaming: use faster models to minimize TTFT (time-to-first-token)
-		routeResult = h.modelRouter.RouteForStreaming(routerMessages, tokenCount)
+		routeResult = h.modelRouter.RouteForStreaming(routerMessages, tokenCount, anthropicReq.Model)
 	} else {
 		var err error
-		routeResult, err = h.modelRouter.Route(routerMessages, tokenCount)
+		routeResult, err = h.modelRouter.Route(routerMessages, tokenCount, anthropicReq.Model)
 		if err != nil {
 			h.sendError(w, http.StatusInternalServerError, "routing failed", err)
 			return
@@ -193,6 +210,7 @@ func (h *MessagesHandler) HandleMessages(w http.ResponseWriter, r *http.Request)
 	h.logger.Info("routing request",
 		"scenario", routeResult.Scenario,
 		"model", routeResult.Primary.ModelID,
+		"request_model", anthropicReq.Model,
 		"tokens", tokenCount,
 	)
 

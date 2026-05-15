@@ -3,22 +3,22 @@
 ## Homebrew (macOS & Linux)
 
 ```bash
-brew tap samueltuyizere/tap
+brew tap newmancai/tap
 brew install oc-go-cc
 ```
 
 ## Scoop (Windows)
 
 ```powershell
-scoop bucket add oc-go-cc https://github.com/samueltuyizere/scoop-bucket
+scoop bucket add oc-go-cc https://github.com/newmancai/scoop-bucket
 scoop install oc-go-cc
 ```
 
 ## Build from Source
 
 ```bash
-git clone https://github.com/samueltuyizere/oc-go-cc.git
-cd oc-go-cc
+git clone https://github.com/newmancai/oc-go-cc-optim.git
+cd oc-go-cc-optim
 make build
 
 # Binary is at bin/oc-go-cc
@@ -28,7 +28,7 @@ make install
 
 ## Download a Release Binary
 
-Download the latest release for your platform from the [Releases page](https://github.com/samueltuyizere/oc-go-cc/releases):
+Download the latest release for your platform from the [Releases page](https://github.com/newmancai/oc-go-cc-optim/releases):
 
 | Platform              | File                         |
 | --------------------- | ---------------------------- |
@@ -41,12 +41,12 @@ Download the latest release for your platform from the [Releases page](https://g
 
 ```bash
 # macOS Apple Silicon
-curl -L -o oc-go-cc https://github.com/samueltuyizere/oc-go-cc/releases/latest/download/oc-go-cc_darwin-arm64
+curl -L -o oc-go-cc https://github.com/newmancai/oc-go-cc-optim/releases/latest/download/oc-go-cc_darwin-arm64
 chmod +x oc-go-cc
 sudo mv oc-go-cc /usr/local/bin/
 
 # Windows (PowerShell)
-Invoke-WebRequest -Uri "https://github.com/samueltuyizere/oc-go-cc/releases/latest/download/oc-go-cc_windows-amd64.exe" -OutFile "oc-go-cc.exe"
+Invoke-WebRequest -Uri "https://github.com/newmancai/oc-go-cc-optim/releases/latest/download/oc-go-cc_windows-amd64.exe" -OutFile "oc-go-cc.exe"
 Move-Item -Path "oc-go-cc.exe" -Destination "$env:LOCALAPPDATA\Microsoft\WindowsApps\oc-go-cc.exe"
 ```
 

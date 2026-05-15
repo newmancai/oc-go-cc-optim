@@ -220,7 +220,7 @@ jobs:
   homebrew:
     name: Update Homebrew Tap
     needs: release
-    if: github.repository == 'samueltuyizere/oc-go-cc'
+    if: github.repository == 'newmancai/oc-go-cc-optim'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -348,7 +348,7 @@ jobs:
   scoop:
     name: Update Scoop Bucket
     needs: release
-    if: github.repository == 'samueltuyizere/oc-go-cc'
+    if: github.repository == 'newmancai/oc-go-cc-optim'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
